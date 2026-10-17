@@ -68,6 +68,8 @@ namespace tags {
     struct node_size {};
     //! @brief Shape of the current node.
     struct node_shape {};
+    //! @brief Text of the current node.
+    struct node_text {};
 }
 
 
@@ -120,6 +122,7 @@ MAIN() {
     node.storage(tags::distance_c{})        = color::hsva(dist *hue_scale, 1, 1);
     node.storage(tags::source_diameter_c{}) = color::hsva(sdiam*hue_scale, 1, 1);
     node.storage(tags::diameter_c{})        = color::hsva(diam *hue_scale, 1, 1);
+    node.storage(tags::node_text{})         = node.uid == 0 ? "source" : "";
 }
 //! @brief Export types used by the main function.
 FUN_EXPORT main_t = common::export_list<rectangle_walk_t<3>, select_source_t, abf_distance_t, mp_collection_t<double, double>, broadcast_t<double, double>>;
@@ -187,6 +190,7 @@ using store_t = tuple_store<
     distance_c,         color,
     source_diameter_c,  color,
     diameter_c,         color,
+    node_text,          std::string,
     node_shape,         shape,
     node_size,          double
 >;
@@ -244,6 +248,8 @@ DECLARE_OPTIONS(list,
     plot_type<plot_t>, // the plot description to be used
     dimension<dim>, // dimensionality of the space
     connector<connect::fixed<comm, 1, dim>>, // connection allowed within a fixed comm range
+    label_size_tag<node_size>,
+    label_text_tag<node_text>, // the text of a node is read from this tag in the store
     shape_tag<node_shape>, // the shape of a node is read from this tag in the store
     size_tag<node_size>,   // the size of a node is read from this tag in the store
     color_tag<distance_c, source_diameter_c, diameter_c> // colors of a node are read from these
