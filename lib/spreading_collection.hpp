@@ -122,7 +122,7 @@ MAIN() {
     node.storage(tags::distance_c{})        = color::hsva(dist *hue_scale, 1, 1);
     node.storage(tags::source_diameter_c{}) = color::hsva(sdiam*hue_scale, 1, 1);
     node.storage(tags::diameter_c{})        = color::hsva(diam *hue_scale, 1, 1);
-    node.storage(tags::node_text{})         = node.uid == 0 ? "source" : "";
+    node.storage(tags::node_text{})         = node.uid == 0 ? "source" : std::to_string(node.uid);
 }
 //! @brief Export types used by the main function.
 FUN_EXPORT main_t = common::export_list<rectangle_walk_t<3>, select_source_t, abf_distance_t, mp_collection_t<double, double>, broadcast_t<double, double>>;
